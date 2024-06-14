@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kavacha</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="/download.png" />
+
+    <style>
+        .Kavacha {
+            display: grid;
+            justify-content: center;
+            justify-items: center;
+            width: auto;
+            height: 100vh;
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .Kavacha a {
+            text-decoration: none;
+            text-wrap: wrap;
+            word-wrap: break-word;
+            color: rgba(255, 217, 0, 0.91);
+            font-size: 1em;
+            box-sizing: content-box;
+        }
+
+        li::marker {
+            text-wrap: wrap;
+            word-wrap: break-word;
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1.5vw),
+                    var(--max-font-size));
+        }
+
+
+
+        .section-links {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            text-align: left;
+            color: #ffd900e8;
+            position: absolute;
+            font-size: 2.3rem;
+            align-items: center;
+            align-content: center;
+            flex-wrap: wrap;
+        }
+
+        .section-links a {
+            margin: 0.2rem;
+            font-size: 2.3rem;
+        }
+
+        .container .overview-link a {
+            text-decoration: none;
+            color: rgba(255, 217, 0, 0.91);
+            font-size: 2.3em;
+            padding-bottom: 13%;
+        }
+
+        :root {
+            --min-font-size: 0.3em;
+            --max-font-size: 1.3em;
+            --min-width: 280px;
+            --max-width: 1920px;
+            --overview-min-font-size: 1.7em;
+            --overview-max-font-size: 2.3em;
+        }
+
+        .container a {
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1.5vw),
+                    var(--max-font-size));
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .container {
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1vw),
+                    var(--max-font-size));
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .container .overview-link a {
+            font-size: clamp(var(--overview-min-font-size),
+                    calc(var(--overview-min-font-size) + 1vw),
+                    var(--overview-max-font-size));
+        }
+
+        #KavachaList li:first-child {
+            padding-top: 1rem;
+        }
+
+        #KavachaList li:last-child {
+            padding-bottom: 2rem;
+        }
+
+        a:hover {
+            padding: 0.5rem;
+            display: grid;
+            place-content: center;
+            border: rgba(0, 255, 255, 0.01) solid 1px;
+            border-radius: 0.7rem;
+            -webkit-backdrop-filter: blur(1rem) saturate(222%);
+            backdrop-filter: blur(1rem) saturate(222%);
+            transition: backdrop-filter 0.29s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="Kavacha">
+            <ol id="KavachaList" style="color:rgba(255, 217, 0, 0.91);font-size: 29px"></ol>
+
+            <div class="section-links" id="sectionLinks">
+                <ol></ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const filenames = [
+            "Aditya Kavacham.pdf",
+            "Akkalkot Swami Kavacham.pdf",
+            "Amogha Shiva Kavacham.pdf",
+            "Baglamukhi Varna Kavacham.pdf",
+            "Balarama Kavacham.pdf",
+            "Banalinga Kavacham.pdf",
+            "Baneshwara Samsara Pavana Kavacham.pdf",
+            "Bhairavi Kavacham.pdf",
+            "Bharata Kavacham.pdf",
+            "Bhargava Kavacham.pdf",
+            "Bhavani Kavacham Bhavani Trilokya Mohana Kavacham.pdf",
+            "Bhuvaneshwari Kavacham.pdf",
+            "Brihaspati Kavacham.pdf",
+            "Budha Kavacham.pdf",
+            "Chandi Kavacham.pdf",
+            "Chandra Kavacham.pdf",
+            "Chinnamasta Kavacham.pdf",
+            "Dasha Mahavidya Kavacham.pdf",
+            "Dattatreya Vajra Kavacham.pdf",
+            "Devi Kavacham.pdf",
+            "Dhanada Kavacham.pdf",
+            "Durga Kavacham Brahmanda Mohanakhyam.pdf",
+            "Durga Kavacham Kubjika Tantra.pdf",
+            "Ekadasa Mukha Hanumath Kavacham.pdf",
+            "Ekakshara Ganapathi Kavacham.pdf",
+            "Ekamukhi Hanumat Kavacham.pdf",
+            "Ganesha Kavacham.pdf",
+            "Gayatri Kavacham Alabhya.pdf",
+            "Gayatri Kavacham.pdf",
+            "Gopala Akshaya Kavacham.pdf",
+            "Guru Kavacham From Kankalamalini Tantra.pdf",
+            "Guru Kavacham From Purascharana Rasollasa.pdf",
+            "Guru Kavachantaram.pdf",
+            "Hanumath Kavacham.pdf",
+            "Haridra Ganesha Kavacham.pdf",
+            "Kali Kavacham 1.pdf",
+            "Kali Kavacham 4.pdf",
+            "Kamakhya Kavacham.pdf",
+            "Kamala Kavacham.pdf",
+            "Ketu Kavacham.pdf",
+            "Krishna Kavacham Trailokya Vijaya Kavacham.pdf",
+            "Kumari Kavacham.pdf",
+            "Lakshmana Kavacham.pdf",
+            "Lakshmi Kavacham (2).pdf",
+            "Lakshmi Kavacham.pdf",
+            "Lakshmi Narayana Kavacham.pdf",
+            "Maha Lakshmi Kavacham.pdf",
+            "Maha Mrutyunjaya Kavacham (2).pdf",
+            "Maha Mrutyunjaya Kavacham.pdf",
+            "Maha Shasta Anugraha Kavacham.pdf",
+            "Mangala Kavacham.pdf",
+            "Matangi Kavacham Sumukhi Kavacham.pdf",
+            "Narasimha Kavacham By Bhakta Prahlada.pdf",
+            "Narasimha Kavacham By Brahma.pdf",
+            "Narayana Kavacham.pdf",
+            "Navagraha Kavacham.pdf",
+            "Pancha Mukha Hanumath Kavacham.pdf",
+            "Radha Kavacham.pdf",
+            "Radha Kavacham.pdf",
+            "Rahu Kavacham.pdf",
+            "Rama Kavacham.pdf",
+            "Rama Raksha Stotram Ananda Ramayana.pdf",
+            "Rama Raksha Stotram Padma Puranam.pdf",
+            "Renuka Kavacham  (2).pdf",
+            "Renuka Kavacham  (3).pdf",
+            "Renuka Kavacham.pdf",
+            "Rudra Kavacham.pdf",
+            "Saptha Mukhi Hanumath Kavacham.pdf",
+            "Saraswati Kavacham Vishwavijaya Kavacham.pdf",
+            "Shani Vajra Panjara Kavacham.pdf",
+            "Sharadesha Kavacham.pdf",
+            "Shatrugna Kavacham.pdf",
+            "Shiva Kavacham Brahmanda Vijaya.pdf",
+            "Shiva Kavacham.pdf",
+            "Shukra Kavacham.pdf",
+            "Siddha Veera Guru Kavacham.pdf",
+            "Sita Kavacham.pdf",
+            "Srividya Kavacham.pdf",
+            "Subrahmanya Kavacham.pdf",
+            "Subrahmanya Kavacham.pdf",
+            "Sudarshana Kavacham.pdf",
+            "Surya Kavacha By Bhairava.pdf",
+            "Surya Kavacham Surya Krutha.pdf",
+            "Surya Kavacham Yagnavalkya Rishi Krutha.pdf",
+            "Tara Kavacham.pdf",
+            "Tara Pratyangari Kavacham.pdf",
+            "Tara Stotram.pdf",
+            "Trailokya Mangala Kavacham.pdf",
+            "Trilokya Mohana Kali Kavacham.pdf",
+            "Tulasi Kavacham.pdf",
+            "Vakratunda Kavacham.pdf",
+            "Vamsha Vruddhikaram Durga Kavacham.pdf",
+            "Varada Ganesha Kavacham.pdf",
+            "Venkateshwara Vajra Kavacham.pdf",
+            "Vishnu Kavacham Brahmanda Pavana Kavacham.pdf"
+        ]
+
+        filenames.forEach((filename) => {
+            const li = document.createElement("li");
+            li.setAttribute("filename", filename);
+
+            const a = document.createElement("a");
+            a.href = "#";
+            a.textContent = filename.replace(".pdf", ""); // Remove file extensions
+            a.addEventListener("click", () => redirectToKavachaContent(filename)); // Use addEventListener for better event handling
+
+            li.appendChild(a);
+            document.getElementById("KavachaList").appendChild(li);
+        });
+
+        function redirectToKavachaContent(filename) {
+            window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}`;
+        }
+    </script>
+</body>
+
+</html>

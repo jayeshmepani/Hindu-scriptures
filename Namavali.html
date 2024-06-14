@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Namavali</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="/download.png" rel="icon" type="image/x-icon" />
+
+  <style>
+    .Namavali {
+      display: grid;
+      justify-content: center;
+      justify-items: center;
+      width: auto;
+      height: 100svh;
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .Namavali a {
+      text-decoration: none;
+      text-wrap: wrap;
+      word-wrap: break-word;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 1em;
+      box-sizing: content-box;
+    }
+
+    li::marker {
+      text-wrap: wrap;
+      word-wrap: break-word;
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+    }
+
+    .section-links {
+      display: flex;
+      flex-direction: column;
+      height: 100svh;
+      text-align: left;
+      justify-content: center;
+      position: absolute;
+      font-size: 3.7rem;
+    }
+
+    .section-links a {
+      margin: 0.2rem;
+      font-size: 2.3rem;
+    }
+
+    .container .overview-link a {
+      text-decoration: none;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 2.3em;
+      padding-bottom: 13%;
+    }
+
+    :root {
+      --min-font-size: 0.3em;
+      --max-font-size: 1.3em;
+      --min-width: 280px;
+      --max-width: 1920px;
+      --overview-min-font-size: 1.7em;
+      --overview-max-font-size: 2.3em;
+    }
+
+    .container a {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .container {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1vw),
+          var(--max-font-size));
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .container .overview-link a {
+      font-size: clamp(var(--overview-min-font-size),
+          calc(var(--overview-min-font-size) + 1vw),
+          var(--overview-max-font-size));
+    }
+
+    #NamavaliList li:first-child {
+      padding-top: 1rem;
+    }
+
+    #NamavaliList li:last-child {
+      padding-bottom: 1rem;
+    }
+
+    a:hover {
+      padding: 0.5rem;
+      display: grid;
+      place-content: center;
+      border: rgba(0, 255, 255, 0.01) solid 1px;
+      border-radius: 0.7rem;
+      -webkit-backdrop-filter: blur(1rem) saturate(222%);
+      backdrop-filter: blur(1rem) saturate(222%);
+      transition: backdrop-filter 0.29s ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div class="Namavali">
+
+      <ol id="NamavaliList" style="color:rgba(255, 217, 0, 0.91);font-size: 29px"></ol>
+
+      <!-- Links to  sections -->
+      <div class="section-links" id="sectionLinks">
+        <!-- Links will be dynamically added here -->
+
+      </div>
+    </div>
+  </div>
+  <script>
+    // Get the filename from the query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const section = urlParams.get('section'); // Get the section parameter from the URL
+    console.log('Section:', section);
+
+    // Define the Namavalis based on the section
+    const NamavaliFiles = {
+      '100, 108': [
+        "AdiShankaracharya.pdf",
+        "Anjaneya Ramarahasya.pdf",
+        "Anjaneya.pdf",
+        "Annapurna.pdf",
+        "Ardhanarishvara.pdf",
+        "Chandrashekharendra Saraswati.pdf",
+        "Devasena.pdf",
+        "Dhanvantari.pdf",
+        "Gakaradi Ganapati.pdf",
+        "Ganapati.pdf",
+        "Ganga.pdf",
+        "Goda.pdf",
+        "Harihara.pdf",
+        "Jagadanandakaraka.pdf",
+        "Kartikeya.pdf",
+        "Krishna.pdf",
+        "Kubera.pdf",
+        "Lakshmi Nrisimha.pdf",
+        "Lakshmi.pdf",
+        "Mrtyunjaya.pdf",
+        "Nrisimha.pdf",
+        "Rama Ramarahasya.pdf",
+        "Rama.pdf",
+        "Saraswati.pdf",
+        "Shakti divyasthaniya.pdf",
+        "Shiva divyasthaniya.pdf",
+        "Shiva.pdf",
+        "Sita Ramarahasya.pdf",
+        "Sita.pdf",
+        "Subrahmanya Hastasthita Astrayudha.pdf",
+        "Subrahmanya.pdf",
+        "Surya Mahabharatam.pdf",
+        "Surya.pdf",
+        "Tulasi.pdf",
+        "Valli.pdf",
+        "Venkatesha.pdf",
+        "Venkateshwara.pdf",
+        "Vishnu divyasthaniya.pdf"
+      ],
+      '300': [
+        "Lalita.pdf",
+        "Rudra.pdf"
+      ],
+      '1000, 1008': [
+        "Gakaradi Ganapati.pdf",
+        "Rama.pdf",
+        "Saraswati.pdf",
+        "Shiva.pdf",
+        "Vakratunda Mahaganapati.pdf",
+        "Vishnu.pdf"
+      ]
+    };
+
+    // Loop to generate list items for Namavalis
+    if (NamavaliFiles[section]) {
+      NamavaliFiles[section].forEach((filename) => {
+        const li = document.createElement('li');
+        li.setAttribute('filename', `${section}/${filename}`);
+
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = filename.replace('.pdf', ''); // Remove file extensions
+        a.addEventListener('click', () => redirectToContent(`${section}/${filename}`)); // Use addEventListener for better event handling
+
+        li.appendChild(a);
+        document.getElementById('NamavaliList').appendChild(li);
+      });
+    } else {
+      console.error('Invalid section:', section);
+      // Handle invalid section here (e.g., show an error message)
+    }
+
+    // Function to redirect to the content page for the selected section and Namavali
+    function redirectToContent(filename) {
+      // Encode the section name with spaces before appending it to the URL
+      const encodedSection = encodeURIComponent(section);
+
+      // Redirect to the content page with the selected filename and directory as query parameters
+      window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}&directory=${encodedSection}`;
+    }
+
+    // Check if the section parameter exists in the URL
+    if (!section) {
+      // If not, add links to Namavali sections
+      const sectionLinksDiv = document.getElementById('sectionLinks');
+
+      const NamavaliSections = [
+        '100, 108',
+        '300',
+        '1000, 1008'
+      ];
+
+      NamavaliSections.forEach(folder => {
+        const sectionLink = document.createElement('a');
+        sectionLink.href = `Namavali.html?section=${encodeURIComponent(folder)}`;
+        sectionLink.textContent = folder;
+        sectionLinksDiv.appendChild(sectionLink);
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link rel="icon" type="image/x-icon" href="/download.png">
+  <link rel="stylesheet" href="style.css">
+  <title></title>
+
+  <style>
+    .center-container {
+      background-image: linear-gradient(#000733d4, rgba(0, 8, 51, 0.85)), url(images/bg.png);
+      height: 100vh;
+      /* Use viewport height for full-page coverage */
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: 1rem;
+      overflow: auto;
+      /* Allow scrolling if content overflows */
+
+      /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+      scrollbar-width: none;
+      /* Hide scrollbar for Firefox */
+      -ms-overflow-style: none;
+      /* Hide scrollbar for IE and Edge */
+    }
+
+    .center-container::-webkit-scrollbar {
+      display: none;
+      /* Hide scrollbar for Webkit browsers */
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="center-container">
+
+    <div id="jsonContent">
+      <br>
+      <br>
+      <!-- Content of the selected json will be displayed here -->
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the filename from the query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const filename = urlParams.get('filename');
+        console.log('Filename:', filename);
+
+        // Determine the URL based on the referrer
+        let url;
+        if (document.referrer.includes('Gita.html')) {
+          url = `DharmicData/Gitas/${filename}`;
+        } else if (document.referrer.includes('DattP.html')) {
+          url = `DharmicData/UpaPuranas/Datt Purana/${filename}`;
+        } else if (document.referrer.includes('Stotra.html')) {
+          url = `DharmicData/Stotras/${filename}`;
+        } else if (document.referrer.includes('HarivanshaP.html')) {
+          url = `DharmicData/UpaPuranas/Harivansha Purana/${filename}`;
+        } else if (document.referrer.includes('NaradiyaP.html')) {
+          url = `DharmicData/UpaPuranas/Naradiya Purana/${filename}`;
+        } else if (document.referrer.includes('VishnudharmottarP.html')) {
+          url = `DharmicData/UpaPuranas/Vishnudharmottar Purana/${filename}`;
+        } else if (document.referrer.includes('KalikaP.html')) {
+          url = `DharmicData/UpaPuranas/Kalika Purana/${filename}`;
+        } else if (document.referrer.includes('MallaP.html')) {
+          url = `DharmicData/UpaPuranas/Malla Purana/${filename}`;
+        } else if (document.referrer.includes('MudgalaP.html')) {
+          url = `DharmicData/UpaPuranas/Mudgala Purana/${filename}`;
+        } else if (document.referrer.includes('ShivadharmaP.html')) {
+          url = `DharmicData/UpaPuranas/Shivadharma Purana/${filename}`;
+        } else if (document.referrer.includes('SrimadDeviBhagwatP.html')) {
+          url = `DharmicData/UpaPuranas/Srimad Devi Bhagwat Purana/${filename}`;
+        } else if (document.referrer.includes('Chalisa.html')) {
+          url = `DharmicData/Chalisa/${filename}`;
+        } else if (document.referrer.includes('Ramcharitmanas.html')) {
+          url = `DharmicData/Ramcharitmanas/${filename}`;
+        } else {
+          console.error('Invalid referrer:', document.referrer);
+          return; // Stop execution if referrer is invalid
+        }
+
+        if (url) {
+          console.log('URL:', url);
+
+          // Fetch and display the selected JSON file
+          fetch(url)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(`Failed to fetch JSON file: ${filename}`);
+              }
+              return response.json();
+            })
+            .then(data => {
+              console.log('JSON Data:', data);
+
+              // Handle the JSON data based on its structure
+              if (Array.isArray(data) && data.length > 0) {
+                // Check for "content" property in the first object
+                if (data[0].content) {
+                  // Display logic for JSON with "content" property
+                  const jsonContentDiv = document.getElementById('jsonContent');
+                  data.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.style.marginBottom = '20px'; // Optional styling
+                    entryDiv.innerHTML = `
+                      <div style="display: grid; align-items: center; justify-content: center;">
+                        <p style="color: yellow; font-weight: bold;">${entry.kaand}</p>
+                        <p style="color: white; font-weight: bold;">${entry.type}</p>
+                        <p style="color: orange;">${entry.content.replace(/\n/g, '<br>').trim()}</p>
+                        <br>
+                        <br>
+                      </div>
+                    `;
+                    jsonContentDiv.appendChild(entryDiv);
+                  });
+                } else if (data[0].text) {
+                  // Display logic for JSON with "text" property
+                  const jsonContentDiv = document.getElementById('jsonContent');
+                  data.forEach(entry => {
+                    const entryDiv = document.createElement('div');
+                    entryDiv.style.marginBottom = '20px'; // Optional styling
+                    entryDiv.innerHTML = `
+                      <div style="display: grid; align-items: center; justify-content: center;">
+                        <p style="color: yellow;">${entry.text.replace(/\n/g, '<br>').trim()}</p>
+                        <br><br>
+                      </div>
+                    `;
+                    jsonContentDiv.appendChild(entryDiv);
+                  });
+                } else {
+                  console.error(`Error: Unexpected JSON structure.`);
+                }
+              } else {
+                console.error(`Error: Unexpected JSON structure.`);
+              }
+            })
+            .catch(error => {
+              // Handle errors here
+              console.error(`Error fetching or displaying JSON file ${filename}:`, error);
+            });
+        }
+      });
+    </script>
+
+</body>
+
+</html>

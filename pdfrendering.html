@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Rendering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow-y: hidden;
+        }
+
+        .top-bar {
+            background-color: hsla(246, 97%, 7%, 0.83);
+            color: #ffffff;
+            padding: 0.37rem;
+        }
+
+        .page-info {
+            margin-left: 1rem;
+        }
+
+        .error {
+            background: orangered;
+            padding: 1rem;
+        }
+
+        .center-container {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-items: center;
+            align-content: center;
+            justify-content: center;
+            height: 100vh;
+            background-image: linear-gradient(hsla(246, 97%, 7%, 0.83), hsla(279, 97%, 9%, 0.83));
+        }
+
+        #the-canvas {
+            transform: translateY(-1.5rem);
+            height: 90svh;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: center;
+            align-items: center;
+        }
+
+        @media (orientation: portrait) {
+            #the-canvas {
+                transform: translateY(-1.5rem);
+                width: 90svw;
+                display: flex;
+                justify-content: center;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-content: center;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-bar">
+        <span class="page-info">
+            Page <span id="page-num" contenteditable="true" oninput="updatePageNum()"></span> of <span
+                id="page-count"></span>
+        </span>
+    </div>
+
+    <div class="center-container">
+        <canvas id="the-canvas"></canvas>
+    </div>
+
+    <script src="pdfjs/pdf.min.js"></script>
+    <script src="pdfjs/pdf.worker.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const url = '/DharmicData/Upa-Puranas/1/Atma Purana.pdf';
+
+
+            let pdfDoc = null,
+                pageNum = 1,
+                pageIsRendering = false,
+                pageNumIsPending = null,
+                isEditing = false;
+
+            const scale = 1,
+                canvas = document.getElementById('the-canvas'),
+                context = canvas.getContext('2d');
+
+            // Render the page
+            const renderPage = num => {
+                pageIsRendering = true;
+
+                // Get page
+                pdfDoc.getPage(num).then(page => {
+                    // Set scale
+                    const viewport = page.getViewport({ scale });
+
+                    // Set canvas size
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    const renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    // Render the PDF page on the canvas
+                    page.render(renderContext).promise.then(() => {
+                        pageIsRendering = false;
+
+                        if (pageNumIsPending !== null) {
+                            renderPage(pageNumIsPending);
+                            pageNumIsPending = null;
+                        }
+
+                        // Output current page
+                        document.getElementById('page-num').textContent = num;
+                    });
+                });
+            };
+
+            // Check for pages rendering
+            const queueRenderPage = num => {
+                if (pageIsRendering) {
+                    pageNumIsPending = num;
+                } else {
+                    renderPage(num);
+                }
+            };
+
+            // Get Document
+            pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+                pdfDoc = pdfDoc_;
+
+                document.getElementById('page-count').textContent = pdfDoc.numPages;
+
+                renderPage(pageNum);
+            }).catch(err => {
+                // Display error
+                const div = document.createElement('div');
+                div.className = 'error';
+                div.appendChild(document.createTextNode(err.message));
+                document.querySelector('body').insertBefore(div, canvas);
+            });
+
+            // Function to update the page number and trigger rendering
+            const updateAndRenderPage = newPageNum => {
+                newPageNum = Math.max(1, Math.min(newPageNum, pdfDoc.numPages));
+
+                if (pageNum !== newPageNum) {
+                    pageNum = newPageNum;
+                    document.getElementById('page-num').textContent = pageNum;
+                    queueRenderPage(pageNum);
+                }
+            };
+
+            // Enable scrolling using the cursor and keys
+            window.addEventListener('wheel', function (e) {
+                const sensitivity = 0.1; // Adjust sensitivity
+                const deltaY = e.deltaY * sensitivity;
+
+                if (deltaY > 0) {
+                    // Scrolling down
+                    updateAndRenderPage(pageNum + 1);
+                } else {
+                    // Scrolling up
+                    updateAndRenderPage(pageNum - 1);
+                }
+            });
+
+            // Enable touch-based scrolling for mobile and tablet devices
+            let touchStartY = 0;
+            window.addEventListener('touchstart', function (e) {
+                touchStartY = e.touches[0].clientY;
+            });
+
+            window.addEventListener('touchend', function (e) {
+                const touchEndY = e.changedTouches[0].clientY;
+                const deltaY = touchEndY - touchStartY;
+
+                const touchSensitivity = 5; // Adjust touch sensitivity
+                const deltaThreshold = window.innerHeight / touchSensitivity;
+
+                if (deltaY > deltaThreshold) {
+                    updateAndRenderPage(pageNum - 1);
+                } else if (deltaY < -deltaThreshold) {
+                    updateAndRenderPage(pageNum + 1);
+                }
+            });
+
+            // Enable navigation using arrow keys and page keys
+            window.addEventListener('keydown', function (e) {
+                if (isEditing) {
+                    if (e.key === 'Enter') {
+                        isEditing = false;
+                        updateAndRenderPage(parseInt(document.getElementById('page-num').textContent, 10));
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+                        e.preventDefault();
+                    }
+                } else {
+                    if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                        // Arrow Up, Arrow Left, or Page Up: Previous page
+                        e.preventDefault();
+                        updateAndRenderPage(pageNum - 1);
+                    } else if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown') {
+                        // Arrow Down, Arrow Right, or Page Down: Next page
+                        e.preventDefault();
+                        updateAndRenderPage(pageNum + 1);
+                    }
+                }
+            });
+
+            // Function to handle editing the page number
+            document.getElementById('page-num').addEventListener('click', function () {
+                isEditing = true;
+                this.textContent = ''; // Clear the content when clicked
+            });
+
+            document.getElementById('page-num').addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    isEditing = false;
+                    updateAndRenderPage(parseInt(this.textContent, 10));
+                    e.preventDefault();
+                }
+            });
+
+            // Show Prev Page
+            const showPrevPage = () => {
+                updateAndRenderPage(pageNum - 1);
+            };
+
+            // Show Next Page
+            const showNextPage = () => {
+                updateAndRenderPage(pageNum + 1);
+            };
+        });
+    </script>
+</body>
+
+</html>

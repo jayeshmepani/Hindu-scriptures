@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stuti</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="/download.png" />
+
+    <style>
+        .Stuti {
+            display: grid;
+            justify-content: center;
+            justify-items: center;
+            width: auto;
+            height: 100vh;
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .Stuti a {
+            text-decoration: none;
+            text-wrap: wrap;
+            word-wrap: break-word;
+            color: rgba(255, 217, 0, 0.91);
+            font-size: 1em;
+            box-sizing: content-box;
+        }
+
+        li::marker {
+            text-wrap: wrap;
+            word-wrap: break-word;
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1.5vw),
+                    var(--max-font-size));
+        }
+
+        .section-links {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            text-align: left;
+            color: #ffd900e8;
+            position: absolute;
+            font-size: 2.3rem;
+            align-items: center;
+            align-content: center;
+            flex-wrap: wrap;
+        }
+
+        .section-links a {
+            margin: 0.2rem;
+            font-size: 2.3rem;
+        }
+
+        .container .overview-link a {
+            text-decoration: none;
+            color: rgba(255, 217, 0, 0.91);
+            font-size: 2.3em;
+            padding-bottom: 13%;
+        }
+
+        :root {
+            --min-font-size: 0.3em;
+            --max-font-size: 1.3em;
+            --min-width: 280px;
+            --max-width: 1920px;
+            --overview-min-font-size: 1.7em;
+            --overview-max-font-size: 2.3em;
+        }
+
+        .container a {
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1.5vw),
+                    var(--max-font-size));
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .container {
+            font-size: clamp(var(--min-font-size),
+                    calc(var(--min-font-size) + 1vw),
+                    var(--max-font-size));
+            text-wrap: wrap;
+            word-wrap: break-word;
+        }
+
+        .container .overview-link a {
+            font-size: clamp(var(--overview-min-font-size),
+                    calc(var(--overview-min-font-size) + 1vw),
+                    var(--overview-max-font-size));
+        }
+
+        #StutiList li:first-child {
+            padding-top: 1rem;
+        }
+
+        #StutiList li:last-child {
+            padding-bottom: 1rem;
+        }
+
+        a:hover {
+            padding: 0.5rem;
+            display: grid;
+            place-content: center;
+            border: rgba(0, 255, 255, 0.01) solid 1px;
+            border-radius: 0.7rem;
+            -webkit-backdrop-filter: blur(1rem) saturate(222%);
+            backdrop-filter: blur(1rem) saturate(222%);
+            transition: backdrop-filter 0.29s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="Stuti">
+            <ol id="StutiList" style="color:rgba(255, 217, 0, 0.91);font-size: 29px"></ol>
+
+            <div class="section-links" id="sectionLinks">
+                <ol></ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const filenames = [
+            "Avadhuta Ashtakam Shuka Deva Stuti.pdf",
+            "Bhavani Stuti.pdf",
+            "Chidambaram Sri Nataraja Stuti.pdf",
+            "Dashashloki Stuti.pdf",
+            "Dashavatara Stuti.pdf",
+            "Devi Dasha Sloki Stuti.pdf",
+            "Durga Chandrakala Stuti.pdf",
+            "Durga Stuti Essense Of Devi Mahatmyam.pdf",
+            "Dwadasarya Surya Stuti.pdf",
+            "Ganesha Stuti.pdf",
+            "Ganga Stuti.pdf",
+            "Garbha Stuti.pdf",
+            "Gokarna Ganadhipa Stuti.pdf",
+            "Gopala Stuti.pdf",
+            "Guru Stuti.pdf",
+            "Hanumath Stuti.pdf",
+            "Hariharabheda Stuti.pdf",
+            "Kanduka Stuti.pdf",
+            "Laghu Vayu Stuti.pdf",
+            "Maha Gayatri Lila Stuti.pdf",
+            "Mahalakshmi Stuti.pdf",
+            "Marga Sahaya Linga Stuti.pdf",
+            "Meenakshi Stuti.pdf",
+            "Narasimha Nakha Stuti.pdf",
+            "Narasimha Stuti Shukracharya.pdf",
+            "Narayana Stuti.pdf",
+            "Parashurama Stuti.pdf",
+            "Pitru Stotram Pitru Stuti.pdf",
+            "Rama Stuti Brahma.pdf",
+            "Rama Stuti From Ramcharitmanas.pdf",
+            "Rama Stuti Jatayu.pdf",
+            "Rama Stuti Tulsidas.pdf",
+            "Saraswati Stuti.pdf",
+            "Sastha Stuti Dashakam.pdf",
+            "Shiva Stotram Lankeshwara Krutha.pdf",
+            "Shiva Stuti Narayana Pandita Krutha.pdf",
+            "Siddha Lakshmi Stuti.pdf",
+            "Sri Chandrashekarendra Saraswati Stuti.pdf",
+            "Sri Shankaracharya Padavalamba Suvarnamala Stuti.pdf",
+            "Sri Shankaracharya Padavalambana Stuti.pdf",
+            "Sri Stuti.pdf",
+            "Subhagodaya Stuti.pdf",
+            "Suvarnamala Stuti.pdf",
+            "Vishnu Stuti By Brahma.pdf",
+            "Vishnu Stuti By Kandu Rishi.pdf",
+            "Vishnu Stuti By Markandeya Rishi.pdf"
+        ]
+
+        filenames.forEach((filename) => {
+            const li = document.createElement("li");
+            li.setAttribute("filename", filename);
+
+            const a = document.createElement("a");
+            a.href = "#";
+            a.textContent = filename.replace(".pdf", ""); // Remove file extensions
+            a.addEventListener("click", () => redirectToStutiContent(filename)); // Use addEventListener for better event handling
+
+            li.appendChild(a);
+            document.getElementById("StutiList").appendChild(li);
+        });
+
+        function redirectToStutiContent(filename) {
+            window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}`;
+        }
+    </script>
+</body>
+
+</html>

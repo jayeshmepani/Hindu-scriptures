@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stotra</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="/download.png" />
+
+  <style>
+    .Stotra {
+      display: grid;
+      justify-content: center;
+      justify-items: center;
+      width: auto;
+      height: 100vh;
+      text-wrap: balance;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      padding: 1.5rem;
+    }
+
+    .Stotra a {
+      text-decoration: none;
+      text-wrap: balance;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 1em;
+      box-sizing: content-box;
+    }
+
+    li::marker {
+      text-wrap: balance;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+    }
+
+    .section-links {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      text-align: left;
+      color: #ffd900e8;
+      position: absolute;
+      font-size: 2.3rem;
+      align-items: center;
+      align-content: center;
+      flex-wrap: wrap;
+    }
+
+    .section-links a {
+      margin: 0.2rem;
+      font-size: 2.3rem;
+    }
+
+    .container .overview-link a {
+      text-decoration: none;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 2.3em;
+      padding-bottom: 13%;
+    }
+
+    :root {
+      --min-font-size: 0.3em;
+      --max-font-size: 1.3em;
+      --min-width: 280px;
+      --max-width: 1920px;
+      --overview-min-font-size: 1.7em;
+      --overview-max-font-size: 2.3em;
+    }
+
+    .container a {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+      text-wrap: balance;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .container {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1vw),
+          var(--max-font-size));
+      text-wrap: balance;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .container .overview-link a {
+      font-size: clamp(var(--overview-min-font-size),
+          calc(var(--overview-min-font-size) + 1vw),
+          var(--overview-max-font-size));
+    }
+
+    #StotraList li:first-child {
+      padding-top: 1rem;
+    }
+
+    #StotraList li:last-child {
+      padding-bottom: 1rem;
+    }
+
+    a:hover {
+      padding: 0.5rem;
+      display: grid;
+      place-content: center;
+      border: rgba(0, 255, 255, 0.01) solid 1px;
+      border-radius: 0.7rem;
+      -webkit-backdrop-filter: blur(1rem) saturate(222%);
+      backdrop-filter: blur(1rem) saturate(222%);
+      transition: backdrop-filter 0.29s ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="Stotra">
+      <ol id="StotraList" style="color:rgba(255, 217, 0, 0.91);font-size: 29px"></ol>
+
+      <div class="section-links" id="sectionLinks">
+        <ol></ol>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const section = urlParams.get('section');
+    console.log('Section:', section);
+
+    // Define the Stotras based on the section
+    const StotraFiles = {
+      "Adhyatma-Ramayana-Stotras": [
+        "AgastyaDwaraRamaSwarupaKathanam.pdf",
+        "AgastyakrtaRamaStuti.pdf",
+        "AhalyakrtaRamaStotram.pdf",
+        "BharadwajakrtaRamaStuti.pdf",
+        "Chandramopadesha.pdf",
+        "DevaStuti.pdf",
+        "HanumatSambhashanam.pdf",
+        "JatayukrtaRamaStotram.pdf",
+        "JnanaVijnanopadesha.pdf",
+        "KabandhakrtaRamaStotram.pdf",
+        "KalanemiSambhashanam.pdf",
+        "KausalyakrtaRamaStotram.pdf",
+        "KriyaYoga.pdf",
+        "KumbhakarnaSambhashanam.pdf",
+        "LakshmanaSambhashanam.pdf",
+        "Lakshmanopadesha.pdf",
+        "MandodariRavanaSamvada.pdf",
+        "NaradaRamaSamvada.pdf",
+        "NaradaStuti.pdf",
+        "NavavidhabhaktiVarnanam.pdf",
+        "ParashuramakrtaRamaStotram.pdf",
+        "RamaGita.pdf",
+        "RamaHrdayam.pdf",
+        "RamakathaKathanam.pdf",
+        "RamaSambhashanam.pdf",
+        "RamavataraRahasyam.pdf",
+        "Ramopadesha-UttaraKanda.pdf",
+        "Ramopadesha.pdf",
+        "RavanaSanatkumaraSamvadaKatha.pdf",
+        "ShivakrtaRamaStuti.pdf",
+        "ShukaSambhashanam.pdf",
+        "SugrivakrtaRamaStotram.pdf",
+        "SutikshnakrtaRamaStotram.pdf",
+        "SvayamprabhaMoksha.pdf",
+        "TaraTattvopadesha.pdf",
+        "ValiSugrivaKatha.pdf",
+        "ValmikiRamaSthanaVarnanam.pdf",
+        "Valmikyopadesha.pdf",
+        "Vasishthopadesha.pdf",
+        "VibhishanakrtaRamaStotram.pdf",
+        "ViradhakrtaRamaStotram.pdf"
+      ],
+      "Dhyanam": [
+        "Dhyanam.pdf",
+        "DhyanaShloka.pdf",
+        "GuruParampara.pdf",
+        "KanchiKamakshiChurnika.pdf",
+        "KanchiSwastiVachanam.pdf",
+        "MahabharataDhyanam.pdf",
+        "NityaShloka.pdf",
+        "ParabrahmaPratahSmaranam.pdf",
+        "RamayanaDhyanam.pdf",
+        "SaraswatiPrarthana.pdf",
+        "VigneshwaraPrarthana.pdf"
+      ],
+      "Ganesha": [
+        "GanapatiStava.pdf",
+        "Ganashtakam.pdf",
+        "GaneshaBhujangam.pdf",
+        "MahaganapatiNavarnavedapadaStava.pdf",
+        "MahaGaneshaPancharatnam.pdf"
+      ],
+      "Guru": [
+        "KanchiKamakotiGuruParamparaStava.pdf"
+      ],
+      "Hanuman": [
+        "ApaduddharakaDwadashamukhaHanumanStotram.pdf",
+        "HanumanChalisa.pdf",
+        "HanumatPancharatnam.pdf",
+        "SundaraHanumanMahaMantraNamaStotram.pdf"
+      ],
+      "Krishna": [
+        "Achyutashtakam.pdf",
+        "AkrurakrtaDashavataraStuti.pdf",
+        "Balamukundashtakam.pdf",
+        "Balaraksha.pdf",
+        "BhajaGovindam-laghu.pdf",
+        "BhajaGovindam.pdf",
+        "BhishmaStuti.pdf",
+        "Damodarashtakam.pdf",
+        "DhruvakrtaBhagavatStavam.pdf",
+        "GitaGovindam.pdf",
+        "Govindashtakam.pdf",
+        "GuruvatapurishaPancharatnam.pdf",
+        "KrishnaDwadashaNamaStotram.pdf",
+        "KrishnaJananam.pdf",
+        "Krishnashtakam1.pdf",
+        "Krishnashtakam2.pdf",
+        "Krishnashtakam3.pdf",
+        "Madhurashtakam.pdf",
+        "NarayanaKeshadipadantaVarnanam.pdf"
+      ],
+      "Lakshmi": [
+        "KanakadharaStavam.pdf",
+        "LakshmiStotram.pdf",
+        "MahalakshmiStuti.pdf",
+        "Mahalakshmyashtakam.pdf"
+      ],
+      "Nadi": [
+        "Gangakarshanashtakam.pdf",
+        "Gangashtakam.pdf",
+        "GangaStuti.pdf",
+        "KaveriPrarthana.pdf",
+        "Narmadashtakam.pdf",
+        "TriveniStotram.pdf",
+        "Yamunashtakam.pdf"
+      ],
+      "Navagraha": [
+        "AdityaHrdayam.pdf",
+        "AngarakaStotram.pdf",
+        "BrihaspatiStotram.pdf",
+        "BudhaPanchavimshatiNamaStotram.pdf",
+        "ChandraAshtavimshatiNamaStotram.pdf",
+        "ChandraGrahanaPidapariharaShlokam.pdf",
+        "DwadasharyaSuryaStuti.pdf",
+        "KetuPanchavimshatiNamaStotram.pdf",
+        "NavagrahaMangalashtakam.pdf",
+        "NavagrahaPidaharaStotram.pdf",
+        "NavagrahaStotram.pdf",
+        "RahuPanchavimshatiNamaStotram.pdf",
+        "ShanaishcharaAshtakam(Dasharatha).pdf",
+        "ShukraChaturvimshatiNamaStotram.pdf",
+        "SuryaGrahanaPidapariharaShlokam.pdf",
+        "SuryaKavacham.pdf",
+        "SuryaMandalaStotram.pdf",
+        "SuryaPratahSmaranaStotram.pdf",
+        "SuryaryaStotram.pdf",
+        "SuryaStavaraja.pdf",
+        "SuryaStuti.pdf"
+      ],
+      "Purti": [
+        "KshamaPrarthana.pdf",
+        "VandeMataram.pdf"
+      ],
+      "Rama": [
+        "AhalyakrtaRamaStotram.pdf",
+        "ApaduddharanaStotram.pdf",
+        "EkashlokiRamayanam.pdf",
+        "GayatriRamayanam.pdf",
+        "NamaRamayanam.pdf",
+        "RamaBhujangaprayataStotram.pdf",
+        "RamaDwadashaNamaStotram.pdf",
+        "RamarakshaStotram.pdf",
+        "Ramashtakam.pdf",
+        "RamaStavarajaStotram.pdf",
+        "SitaRamaStotram.pdf"
+      ],
+      "Saraswati": [
+        "SaraswatiStotram(Agastya).pdf",
+        "SaraswatiStotram(Brahma).pdf",
+        "SaraswatiStotram(Brihaspati).pdf",
+        "SharadaBhujangaprayataAshtakam.pdf",
+        "SharadaPrarthana.pdf",
+        "VaniStavanam.pdf"
+      ],
+      "Shakti": [
+        "AnnapurnaStotram.pdf",
+        "ArjunaKrtaDurgaStuti.pdf",
+        "DurgaChandraKalaStuti.pdf",
+        "DurgaPancharatnam.pdf",
+        "DurgaStotram.pdf",
+        "Gangashtakam.pdf",
+        "GauriDashakam.pdf",
+        "GayatriStotram.pdf",
+        "KalyanaVrishtiStotram.pdf",
+        "KamakshiMahatmyam.pdf",
+        "KamakshiStotram.pdf",
+        "KamakshiSuprabhatam.pdf",
+        "LalitaPancharatnam.pdf",
+        "MahishasuramardiniStotram.pdf",
+        "MinakshiPancharatnam.pdf",
+        "MukaPanchaShati_10.pdf",
+        "MukaSarah.pdf",
+        "ParashuramaKrtaDurgaStotram.pdf",
+        "ShashthiDeviStotram.pdf",
+        "Shitalashtakam.pdf",
+        "ShyamalaDandakam.pdf",
+        "TriveniStotram.pdf",
+        "Yamunashtakam.pdf",
+        "YudhishthiraKrtaDurgaStotram.pdf"
+      ],
+      "Shasta": [
+        "Hariharatmajashtakam.pdf",
+        "ShastaDashakam.pdf"
+      ],
+      "Shatanama": [
+        "AdityaAshtottaraShatanamaStotram.pdf",
+        "AnjaneyaAshtottaraShatanamaStotram.pdf",
+        "AnnapurnaAshtottaraShatanamaStotram.pdf",
+        "ArdhanarishvaraAshtottaraShatanamaStotram.pdf",
+        "DhanvantariAshtottaraShatanamaStotram.pdf",
+        "DurgaAshtottaraShatanamaStotram.pdf",
+        "GanapatiAshtottaraShatanamaStotram.pdf",
+        "GanapatiGakaraAshtottaraShatanamaStotram.pdf",
+        "GaneshaAshtottaraShatanamaStotram.pdf",
+        "GangaAshtottaraShatanamaStotram.pdf",
+        "GauriAshtottaraShatanamaStotram.pdf",
+        "GodaAshtottaraShatanamaStotram.pdf",
+        "HariharaAshtottaraShatanamaStotram.pdf",
+        "HariharaputraAshtottaraShatanamaStotram.pdf",
+        "HayagrivaAshtottaraShatanamaStotram.pdf",
+        "KarttikeyaAshtottaraShatanamaStotram.pdf",
+        "KrishnaAshtottaraShatanamaStotram.pdf",
+        "LakshmiAshtottaraShatanamaStotram.pdf",
+        "LakshmiNarayanaAshtottaraShatanamaStotram.pdf",
+        "NrisimhaAshtottaraShatanamaStotram.pdf",
+        "RamaAshtottaraShatanamaStotram.pdf",
+        "SaraswatiAshtottaraShatanamaStotram.pdf",
+        "ShaktiAshtottaraShatadivyasthaniyaNamaStotram.pdf",
+        "ShankaracharyaAshtottaraShatanamaStotram.pdf",
+        "ShivaAshtottaraShatadivyasthaniyaNamaStotram.pdf",
+        "ShivaAshtottaraShatanamaStotram.pdf",
+        "SitaAshtottaraShatanamaStotram.pdf",
+        "SubrahmanyaAshtottaraShatanamaStotram.pdf",
+        "SuryaAshtottaraShatanamaStotram.pdf",
+        "TulasiAshtottaraShatanamaStotram.pdf",
+        "VenkateshaAshtottaraShatanamaStotram.pdf",
+        "VishnuAshtottaraShatadivyasthaniyaNamaStotram.pdf",
+        "VyasaAshtottaraShatanamaStotram.pdf"
+      ],
+      "Shiva": [
+        "ArdhanarishwaraStotram.pdf",
+        "Bilvashtakam.pdf",
+        "CharanashringarahitaNatarajaStotram.pdf",
+        "DakshinamurtiStotram(SamaraPungavaDikshitaKrtam).pdf",
+        "DakshinamurtiStotram(VrishabhaDevaKritam).pdf",
+        "DakshinamurtiStotram(VrishabhaDevaKrtam).pdf",
+        "DakshinamurtiStotram.pdf",
+        "Dakshinamurtyashtakam.pdf",
+        "Gurvashtakam.pdf",
+        "Karttikasomavararghyam.pdf",
+        "Lingashtakam.pdf",
+        "MargabandhuStotram.pdf",
+        "Sadashivashtakam.pdf",
+        "Shiva Tandav Stotra.json",
+        "ShivaManasapuja.pdf",
+        "ShivaPanchaksharaStotram.pdf",
+        "ShivaparadhaKshamapanaStotram.pdf",
+        "ShivaPratahSmaranaStotram.pdf",
+        "ShivarakshaStotram.pdf",
+        "ShivashivaaStuti.pdf",
+        "Totakashtakam.pdf",
+        "UmamaheshwaraStotram.pdf",
+        "Vaidyanathashtakam.pdf"
+      ],
+      "Subrahmanya": [
+        "GuhaPancharatnam.pdf",
+        "PrajnavivardhanaKarttikeyaStotram.pdf",
+        "SkandaShashthiKavacham.pdf",
+        "SubrahmanyaBhujangam.pdf",
+        "SubrahmanyaPancharatnam.pdf",
+        "SubrahmanyaShodashaNamaStotram.pdf"
+      ],
+      "Venkatesha": [
+        "ShrinivasaGadyam.pdf",
+        "VenkateshaAshtakam.pdf",
+        "VenkateshaDwadashaNamaStotram.pdf",
+        "VenkateshaKaravalambaStotram.pdf",
+        "VenkateshaMangalashasanam.pdf",
+        "VenkateshaPrapatti.pdf",
+        "VenkateshaStotram.pdf",
+        "VenkateshaSuprabhatam.pdf"
+      ],
+      "Vishnu": [
+        "BrahmapaaraStotram.pdf",
+        "DhanvatariStotram.pdf",
+        "LakshmiNrisimhaKaravalambaStotram.pdf",
+        "LakshmiNrisimhaKarunarasaStotram.pdf",
+        "RanganathaGadyam.pdf",
+        "Ranganathashtakam.pdf",
+        "VishnuBhujangaprayataStotram.pdf",
+        "VishnuVijayaStotram.pdf"
+      ],
+      "Other": [
+        "AvaidhavyaPrarthanaStotram.pdf",
+        "GakaradiGanapatiSahasranamaStotram.pdf",
+        "KaishikaPuranam.pdf",
+        "KalidoshanivaranaStotram.pdf",
+        "KartaviryarjunaStotram.pdf",
+        "KrishnaNamaMahatmyam.pdf",
+        "LalitaTrishati.pdf",
+        "RogaNivaranaShloka.pdf",
+        "SankshepaRamayanam.pdf",
+        "SantanagopalaStotram.pdf",
+        "SaraswatiSahasranamaStotram.pdf",
+        "SaundaryaLahari.pdf",
+        "ShivaMahimnaStotram.pdf",
+        "ShivaSahasranamaStotram-VishnuKrtam.pdf",
+        "ShivaSahasranamaStotram.pdf",
+        "SuryaSahasranamaStotram.pdf",
+        "VakratundaMahaganapatiSahasranamaStotram.pdf",
+        "VishnuSahasranamaStotram.pdf",
+        "YamabhayanivaranaStotram.pdf",
+        "Yamashtakam.pdf"
+      ]
+    };
+
+    async function initialize() {
+      if (section) {
+        const filenames = StotraFiles[section] || [];
+        filenames.forEach(filename => {
+          const li = document.createElement('li');
+          li.setAttribute('filename', `${section}/${filename}`);
+
+          const a = document.createElement('a');
+          a.href = '#';
+          a.textContent = filename.replace('.pdf', '').replace(".json", "");
+          a.addEventListener('click', () => redirectToContent(`${section}/${filename}`));
+
+          li.appendChild(a);
+          document.getElementById('StotraList').appendChild(li);
+        });
+      } else {
+        const sectionLinksDiv = document.getElementById('sectionLinks').querySelector('ol');
+        const StotraSections = Object.keys(StotraFiles);
+        StotraSections.forEach(folder => {
+          const li = document.createElement('li');
+          const sectionLink = document.createElement('a');
+          sectionLink.href = `Stotra.html?section=${encodeURIComponent(folder)}`;
+          sectionLink.textContent = folder;
+          li.appendChild(sectionLink);
+          sectionLinksDiv.appendChild(li);
+        });
+      }
+    }
+
+    function redirectToContent(filename) {
+      if (filename.endsWith('.json')) {
+        window.location.href = `Content(json).html?filename=${encodeURIComponent(filename)}`;
+      } else if (filename.endsWith('.pdf')) {
+        window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}`;
+      } else {
+        console.error("Unsupported file format.");
+      }
+    }
+
+    initialize();
+  </script>
+</body>
+
+</html>

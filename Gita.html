@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gitas</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="/download.png" />
+
+  <style>
+    .Gitas {
+      display: grid;
+      justify-content: center;
+      justify-items: center;
+      width: auto;
+      padding-left: 1rem;
+      height: 100svh;
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .Gitas a {
+      text-decoration: none;
+      text-wrap: wrap;
+      word-wrap: break-word;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 1em;
+      box-sizing: content-box;
+    }
+
+    li::marker {
+      display: grid;
+      text-wrap: wrap;
+      word-wrap: break-word;
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+    }
+
+    .container .overview-link a {
+      text-decoration: none;
+      color: rgba(255, 217, 0, 0.91);
+      font-size: 2.3em;
+      padding-bottom: 13%;
+    }
+
+    :root {
+      --min-font-size: 0.3em;
+      --max-font-size: 1.7em;
+      --min-width: 300px;
+      --max-width: 1920px;
+      --overview-min-font-size: 1.7em;
+      --overview-max-font-size: 2.3em;
+    }
+
+    .container a {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1.5vw),
+          var(--max-font-size));
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .container {
+      font-size: clamp(var(--min-font-size),
+          calc(var(--min-font-size) + 1vw),
+          var(--max-font-size));
+      text-wrap: wrap;
+      word-wrap: break-word;
+    }
+
+    .container .overview-link a {
+      font-size: clamp(var(--overview-min-font-size),
+          calc(var(--overview-min-font-size) + 1vw),
+          var(--overview-max-font-size));
+    }
+
+    #GitasList li:first-child {
+      padding-top: 1rem;
+    }
+
+    #GitasList li:last-child {
+      padding-bottom: 1rem;
+    }
+    a:hover {
+      padding: 0.5rem;
+      display: grid;
+      place-content: center;
+      border: rgba(0, 255, 255, 0.01) solid 1px;
+      border-radius: 0.7rem;
+      -webkit-backdrop-filter: blur(1rem) saturate(222%);
+      backdrop-filter: blur(1rem) saturate(222%);
+      transition: backdrop-filter 0.29s ease-in-out;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="Gitas">
+      <ol id="GitasList" style="color: rgba(255, 217, 0, 0.91); font-size: 29px"></ol>
+    </div>
+  </div>
+  <script>
+    const filenames = [
+      "Aajgar Gita.pdf",
+      "Agastya Gita.json",
+      "Aila Gita (Shrimad Bhagwat Mahapurana).json",
+      "Anu Gita.json",
+      "Ashtavakra Gita (Dattatreyakrut).json",
+      "Avadhuta Gita (Shrimad Bhagwat Mahapurana).pdf",
+      "Avadhuta Gita.json",
+      "Baka Gita.pdf",
+      "Bhagvad Gita",
+      "Bhagavatī Gītā.pdf",
+      "Bhikshu Gita.pdf",
+      "Bodhya Gita (Mahabharata).json",
+      "Brahma Gita (Skanda Purana).json",
+      "Brahma Gita (Yoga Vāsiṣṭha).json",
+      "Brahman Gita (Mahabharata).json",
+      "Devi Gita.json",
+      "Dharma Vyaadh Gita (Mahabharata).json",
+      "Dhisha Gita.json",
+      "Ganesh Gita.json",
+      "Garbha Gita.json",
+      "Gayatri Gita.json",
+      "Gopi Gita.pdf",
+      "Guha Gita.json",
+      "Guru Gita.pdf",
+      "Haarit Gita.pdf",
+      "Hans Gita (Mahabharata).json",
+      "Hans Gita (Shrimad Bhagwat Mahapurana).pdf",
+      "Isvara Gita.json",
+      "Jivan Mukta Gita.pdf",
+      "Kaashyapa Gita.json",
+      "Kama Gita.pdf",
+      "Kapil Gita (Shrimad Bhagwat Mahapurana).json",
+      "Karuna Gita (Shrimad Bhagwat Mahapurana).json",
+      "Lakshman Gita (Ramcharitamanas).json",
+      "Manki Gita.pdf",
+      "Nahusha Gita (Mahabharata).json",
+      "Narada Gita.pdf",
+      "Pandava Gita.json",
+      "Paraashara Gita (Mahabharata).json",
+      "Paramhansa Gita.pdf",
+      "Pingala Gita.pdf",
+      "Pitru Gita (Varaha Purana).json",
+      "Prithvi Gita.json",
+      "Putra Gita.pdf",
+      "Raasa Gita.json",
+      "Ram Gita (Adbhuta Ramayana).json",
+      "Ram Gita (Adhyatma Ramayana).json",
+      "Ribhu Gita.json",
+      "Rishabha Gita (Mahabharata).json",
+      "Rishabha Gita (Shrimad Bhagwat Mahapurana).json",
+      "Rudra Gita (Shrimad Bhagwat Mahapurana).json",
+      "Rudra Gita (Varaha Purana).pdf",
+      "Saptaśatī Gītā.json",
+      "Saraswati Gita.json",
+      "Shadaj Gita.pdf",
+      "Shampak Gita.pdf",
+      "Shanti Gita.json",
+      "Shaunaka Gita (Mahabharata).json",
+      "Shiv Gita.json",
+      "Shiva Gita.pdf",
+      "Shri Ramana Gita.json",
+      "Shri Vaanara Gita.json",
+      "Shrigaala Gita (Mahabharata).json",
+      "Shruti Gita (Shrimad Bhagwat Mahapurana).json",
+      "Siddha Gītā.json",
+      "Surya Gita.json",
+      "Suta Gita.json",
+      "Tulsi Gita.json",
+      "Uddhava Gita.json",
+      "Utathya Gita.json",
+      "Uttara Gita.json",
+      "Vaamadeva Gita (Mahabharata).json",
+      "Vaishnava Gita.json",
+      "Vasishtha Gita.json",
+      "Venu Gita.json",
+      "Vrutra Gita.pdf",
+      "Yajnvalkya Gita (Mahabharata).json",
+      "Yama Gita (Agni Purana).pdf",
+      "Yama Gita (Vishnu Purana).pdf",
+      "Yudhisthira Gita.json",
+    ];
+
+    filenames.forEach((filename) => {
+      const li = document.createElement("li");
+      li.setAttribute("filename", filename);
+
+      const a = document.createElement("a");
+      a.href = "#";
+      a.textContent = filename.replace(".json", "").replace(".pdf", ""); // Remove file extensions
+      a.addEventListener("click", () => redirectToGitaContent(filename)); // Use addEventListener for better event handling
+
+      li.appendChild(a);
+      document.getElementById("GitasList").appendChild(li);
+    });
+
+    function redirectToGitaContent(filename) {
+      if (filename.endsWith('.json')) {
+        window.location.href = `Content(json).html?filename=${encodeURIComponent(filename)}`;
+      } else if (filename.endsWith('.pdf')) {
+        window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}`;
+      } else if (filename === "Bhagvad Gita") {
+        window.location.href = `BhagvadGita.html?filename=${encodeURIComponent(filename)}`;
+      } else {
+        console.error("Unsupported file format.");
+      }
+    }
+
+  </script>
+</body>
+
+</html>
