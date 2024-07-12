@@ -37,8 +37,11 @@ function displayKandaContent() {
 
     // Add additional parameters to the URL
     const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-    const extendedUrl = `kandaContent.html?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
+    const extendedUrl = `${window.location.pathname}?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
     console.log(`Extended URL: ${extendedUrl}`);
+
+    // Update the browser's address bar with the new URL
+    window.history.replaceState(null, null, extendedUrl);
 
     // Load the JSON file dynamically based on the selected Kanda
     const jsonFilePath = `DharmicData/ValmikiRamayana/${kandaNumber}_${selectedKanda.toLowerCase()}.json`;
