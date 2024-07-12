@@ -35,18 +35,6 @@ function displayKandaContent() {
         console.log('selectedKanda is undefined or null');
     }
 
-    // Add additional parameters to the URL
-    const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-    const originalBaseUrl = 'https://jayeshmepani.github.io';
-    const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
-    const currentUrl = window.location.href;
-    const translatedUrl = currentUrl.replace(originalBaseUrl, translatedBaseUrl);
-    const extendedUrl = `${translatedUrl}${additionalParams}`;
-    console.log(`Extended URL: ${extendedUrl}`);
-
-    // Open the new URL in a new tab
-    window.open(extendedUrl, '_blank');
-
     // Load the JSON file dynamically based on the selected Kanda
     const jsonFilePath = `DharmicData/ValmikiRamayana/${kandaNumber}_${selectedKanda.toLowerCase()}.json`;
     console.log(`jsonFilePath: ${jsonFilePath}`);
@@ -97,5 +85,38 @@ function displayNoResults() {
     searchResultsContainer.appendChild(noResultsMessage);
 }
 
+// Function to create and handle the "Translate" button
+function createTranslateButton() {
+    const button = document.createElement('button');
+    button.innerText = 'Translate';
+    button.style.position = 'fixed';
+    button.style.top = '10px';
+    button.style.right = '10px';
+    button.style.padding = '10px';
+    button.style.backgroundColor = 'blue';
+    button.style.color = 'white';
+    button.style.border = 'none';
+    button.style.borderRadius = '5px';
+    button.style.cursor = 'pointer';
+
+    button.addEventListener('click', () => {
+        const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
+        const originalBaseUrl = 'https://jayeshmepani.github.io';
+        const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
+        const currentPath = window.location.pathname;
+        const urlParams = new URLSearchParams(window.location.search);
+        const kandaNumber = urlParams.get('kandaNumber');
+        const selectedKanda = urlParams.get('selectedKanda');
+        const extendedUrl = `${translatedBaseUrl}${currentPath}?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
+        console.log(`Extended URL: ${extendedUrl}`);
+        window.open(extendedUrl, '_blank');
+    });
+
+    document.body.appendChild(button);
+}
+
 // Call the function to display the content when the page loads
-window.onload = displayKandaContent;
+window.onload = () => {
+    displayKandaContent();
+    createTranslateButton();
+};
