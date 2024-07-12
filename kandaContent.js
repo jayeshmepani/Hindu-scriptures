@@ -35,6 +35,11 @@ function displayKandaContent() {
         console.log('selectedKanda is undefined or null');
     }
 
+    // Add additional parameters to the URL
+    const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
+    const extendedUrl = `kandaContent.html?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
+    console.log(`Extended URL: ${extendedUrl}`);
+
     // Load the JSON file dynamically based on the selected Kanda
     const jsonFilePath = `DharmicData/ValmikiRamayana/${kandaNumber}_${selectedKanda.toLowerCase()}.json`;
     console.log(`jsonFilePath: ${jsonFilePath}`);
@@ -48,24 +53,16 @@ function displayKandaContent() {
             // Display the content in the search-results container
             data.forEach(entry => {
                 const entryDetails = document.createElement('div');
-            // Display Kaanda, Sarg, Shloka, and Text
-            entryDetails.innerHTML = `
-            <div style="display: grid; align-items: center; justify-content: center;">
-                <p style="color: yellow;">Kaanda: ${entry.kaanda.charAt(0).toUpperCase() + entry.kaanda.slice(1)}</p>
-                <p style="color: white;">Sarg: ${entry.sarg}</p>
-                <p style="color: white;">Shloka: ${entry.shloka}</p>
-                <p style="color: orange;">${formatText(entry.text)}</p>
-                <br><br>
-            </div>
-            `;
-
-function formatText(text) {
-    const indexOfPipe = text.indexOf('।');
-    if (indexOfPipe !== -1) {
-        return text.replace('।', ' ।<br>');
-    }
-    return text;
-}
+                // Display Kaanda, Sarg, Shloka, and Text
+                entryDetails.innerHTML = `
+                    <div style="display: grid; align-items: center; justify-content: center;">
+                        <p style="color: yellow;">Kaanda: ${entry.kaanda.charAt(0).toUpperCase() + entry.kaanda.slice(1)}</p>
+                        <p style="color: white;">Sarg: ${entry.sarg}</p>
+                        <p style="color: white;">Shloka: ${entry.shloka}</p>
+                        <p style="color: orange;">${formatText(entry.text)}</p>
+                        <br><br>
+                    </div>
+                `;
 
                 searchResultsContainer.appendChild(entryDetails);
             });
@@ -74,6 +71,23 @@ function formatText(text) {
             console.error(`Error loading ${selectedKanda} data:`, error);
             displayNoResults();
         });
+}
+
+// Function to format text
+function formatText(text) {
+    const indexOfPipe = text.indexOf('।');
+    if (indexOfPipe !== -1) {
+        return text.replace('।', ' ।<br>');
+    }
+    return text;
+}
+
+// Function to display no results message
+function displayNoResults() {
+    const searchResultsContainer = document.querySelector('.search-results');
+    const noResultsMessage = document.createElement('div');
+    noResultsMessage.innerHTML = `<p>No results found.</p>`;
+    searchResultsContainer.appendChild(noResultsMessage);
 }
 
 // Call the function to display the content when the page loads
