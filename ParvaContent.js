@@ -1,3 +1,4 @@
+// Map filenames to book names
 const filenameToBook = {
   '1.json': 'Adi Parva',
   '2.json': 'Sabha Parva',
@@ -47,14 +48,15 @@ fetch(`DharmicData/Mahabharata/${filename}`)
 
       // Display Book, Chapter, Shloka, and Text
       entryDiv.innerHTML = `
-              <div style="display: grid; align-items: center; justify-content: center;">
-                  <p style="color: yellow;">Book: ${bookName}</p>
-                  <p style="color: white;">Chapter: ${entry.chapter}</p>
-                  <p style="color: white;">Shloka: ${entry.shloka}</p>
-                  <p style="color: orange;">${entry.text.replace(/\n/g, ' ।<br> ').trim()} ॥</p>
-                  <br><br>
-              </div>
-          `;
+      <div style="display: grid; align-items: center; justify-content: center;">
+        <p style="color: yellow;">Book: ${bookName}</p>
+        <p style="color: white;">Chapter: ${entry.chapter}</p>
+        <p style="color: white;">Shloka: ${entry.shloka}</p>
+        <p style="color: orange;">${entry.text.replace(/\n/g, ' ।<br> ').trim()} ॥</p>
+        <br>
+        <br>
+      </div>
+    `;
 
       // Append the entry div to the main content div
       jsonContentDiv.appendChild(entryDiv);
@@ -69,14 +71,21 @@ fetch(`DharmicData/Mahabharata/${filename}`)
 function createTranslateButton() {
   const button = document.createElement('button');
   button.innerText = 'Translate';
+  button.style.position = 'fixed';
+  button.style.top = '10px';
+  button.style.right = '10px';
+  button.style.padding = '10px';
+  button.style.backgroundColor = 'blue';
+  button.style.color = 'white';
+  button.style.border = 'none';
+  button.style.borderRadius = '5px';
+  button.style.cursor = 'pointer';
 
   button.addEventListener('click', () => {
     const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
     const originalBaseUrl = 'https://jayeshmepani.github.io';
     const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
     const currentPath = window.location.pathname;
-    const urlParams = new URLSearchParams(window.location.search);
-    const filename = urlParams.get('filename');
     const extendedUrl = `${translatedBaseUrl}${currentPath}?filename=${filename}${additionalParams}`;
     console.log(`Extended URL: ${extendedUrl}`);
     window.open(extendedUrl, '_blank');
@@ -85,7 +94,7 @@ function createTranslateButton() {
   document.body.appendChild(button);
 }
 
-// Call the function to create the "Translate" button when the page loads
+// Call the function to create the Translate button when the page loads
 window.onload = () => {
   createTranslateButton();
 };
