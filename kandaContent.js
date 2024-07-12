@@ -44,8 +44,8 @@ function displayKandaContent() {
     const extendedUrl = `${translatedUrl}${additionalParams}`;
     console.log(`Extended URL: ${extendedUrl}`);
 
-    // Update the browser's address bar with the new URL
-    window.history.replaceState(null, null, extendedUrl);
+    // Open the new URL in a new tab
+    window.open(extendedUrl, '_blank');
 
     // Load the JSON file dynamically based on the selected Kanda
     const jsonFilePath = `DharmicData/ValmikiRamayana/${kandaNumber}_${selectedKanda.toLowerCase()}.json`;
