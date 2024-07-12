@@ -37,7 +37,10 @@ function displayKandaContent() {
 
     // Add additional parameters to the URL
     const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-    const extendedUrl = `${window.location.pathname}?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
+    const originalBaseUrl = 'https://jayeshmepani.github.io';
+    const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
+    const currentPath = window.location.pathname;
+    const extendedUrl = `${translatedBaseUrl}${currentPath}?kandaNumber=${kandaNumber}&selectedKanda=${selectedKanda}${additionalParams}`;
     console.log(`Extended URL: ${extendedUrl}`);
 
     // Update the browser's address bar with the new URL
