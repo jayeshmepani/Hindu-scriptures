@@ -71,14 +71,17 @@ fetch(`DharmicData/Mahabharata/${filename}`)
 function createTranslateButton() {
   const button = document.createElement('button');
   button.innerText = 'Translate';
+  button.type = 'submit';
+  button.className = 'btn waves-effect waves-light'; // Add the specified class names
   button.style.position = 'fixed';
   button.style.top = '10px';
   button.style.right = '10px';
   button.style.padding = '10px';
-  button.style.backgroundColor = 'blue';
+  button.style.borderRadius = '13px'; // Update border-radius
+  button.style.background = '#058f8c'; // Update background
+  button.style.boxShadow = 'inset 9.61px 9.61px 16px #047471, inset -9.61px -9.61px 16px #06aaa7'; // Update box-shadow
   button.style.color = 'white';
   button.style.border = 'none';
-  button.style.borderRadius = '5px';
   button.style.cursor = 'pointer';
 
   button.addEventListener('click', () => {
