@@ -46,9 +46,15 @@ document.addEventListener("DOMContentLoaded", function () {
         pageNumIsPending = null;
       }
 
-      // Output current page
-      document.querySelector('#page-num').textContent = num;
+      // Output current page (modified)
+      document.querySelector('#page-num').textContent = displayPageNumber(num - 6); // Use the new function
     });
+
+    // Helper function to display page numbers correctly
+    function displayPageNumber(num) {
+      const romanNumerals = { '-5': 'I', '-4': 'II', '-3': 'III', '-2': 'IV', '-1': 'V', '0': 'VI' };
+      return num in romanNumerals ? romanNumerals[num] : num;
+    }
   };
 
   // Check for pages rendering
@@ -64,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
   pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
     pdfDoc = pdfDoc_;
 
-    document.querySelector('#page-count').textContent = pdfDoc.numPages;
+    document.querySelector('#page-count').textContent = pdfDoc.numPages - 6;
 
     renderPage(pageNum);
   }).catch(err => {
@@ -83,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (pageNum !== newPageNum) {
       pageNum = newPageNum;
-      document.getElementById('page-num').textContent = pageNum;
+      document.getElementById('page-num').textContent = pageNum - 6;
       queueRenderPage(pageNum);
     }
   };
@@ -121,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
       updateAndRenderPage(pageNum + 1);
     }
   });
-  
+
   let touchStartX = 0;
   window.addEventListener('touchstart', function (e) {
     touchStartX = e.touches[0].clientX;
@@ -167,24 +173,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to handle editing the page number
   const updatePageNum = () => {
     const inputElement = document.getElementById('page-num');
-    const newPageNum = parseInt(inputElement.textContent, 10);
+    const newPageNum = parseInt(inputElement.textContent, 10) + 6;
 
     if (!isNaN(newPageNum)) {
       updateAndRenderPage(newPageNum);
     } else {
       // If the entered page number is invalid, reset to the current page number
-      inputElement.textContent = pageNum;
+      inputElement.textContent = pageNum - 6;
     }
-  };
-
-  // Show Prev Page
-  const showPrevPage = () => {
-    updateAndRenderPage(pageNum - 1);
-  };
-
-  // Show Next Page
-  const showNextPage = () => {
-    updateAndRenderPage(pageNum + 1);
   };
 
   document.getElementById('page-num').addEventListener('click', function () {
@@ -207,4 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  // Expose the updatePageNum function to the global scope
+  window.updatePageNum = updatePageNum;
 });

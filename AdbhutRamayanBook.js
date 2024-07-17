@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       // Output current page
-      document.querySelector('#page-num').textContent = num;
+      document.querySelector('#page-num').textContent = num + 14;
     });
   };
 
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
   pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
     pdfDoc = pdfDoc_;
 
-    document.querySelector('#page-count').textContent = pdfDoc.numPages;
+    document.querySelector('#page-count').textContent = pdfDoc.numPages + 14;
 
     renderPage(pageNum);
   }).catch(err => {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (pageNum !== newPageNum) {
       pageNum = newPageNum;
-      document.getElementById('page-num').textContent = pageNum;
+      document.getElementById('page-num').textContent = pageNum + 14;
       queueRenderPage(pageNum);
     }
   };
@@ -122,6 +122,25 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  let touchStartX = 0;
+  window.addEventListener('touchstart', function (e) {
+    touchStartX = e.touches[0].clientX;
+  });
+
+  window.addEventListener('touchend', function (e) {
+    const touchEndX = e.changedTouches[0].clientX;
+    const deltaX = touchEndX - touchStartX;
+
+    const touchSensitivity = 5; // Adjust touch sensitivity
+    const deltaThreshold = window.innerWidth / touchSensitivity;
+
+    if (deltaX > deltaThreshold) {
+      updateAndRenderPage(pageNum - 1);
+    } else if (deltaX < -deltaThreshold) {
+      updateAndRenderPage(pageNum + 1);
+    }
+  });
+
   // Enable navigation using arrow keys and page keys
   window.addEventListener('keydown', function (e) {
     if (isEditing) {
@@ -148,24 +167,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to handle editing the page number
   const updatePageNum = () => {
     const inputElement = document.getElementById('page-num');
-    const newPageNum = parseInt(inputElement.textContent, 10);
+    const enteredPageNum = parseInt(inputElement.textContent, 10);
 
-    if (!isNaN(newPageNum)) {
-      updateAndRenderPage(newPageNum);
+    if (!isNaN(enteredPageNum)) {
+      // First, reset to the first page of the PDF (which is displayed as page 15)
+      pageNum = 1;
+      
+      // Then, jump to the entered page number
+      const targetPageNum = enteredPageNum - 14;
+      updateAndRenderPage(targetPageNum);
     } else {
       // If the entered page number is invalid, reset to the current page number
-      inputElement.textContent = pageNum;
+      inputElement.textContent = pageNum + 14;
     }
-  };
-
-  // Show Prev Page
-  const showPrevPage = () => {
-    updateAndRenderPage(pageNum - 1);
-  };
-
-  // Show Next Page
-  const showNextPage = () => {
-    updateAndRenderPage(pageNum + 1);
   };
 
   document.getElementById('page-num').addEventListener('click', function () {
@@ -188,4 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+
+  // Expose the updatePageNum function to the global scope
+  window.updatePageNum = updatePageNum;
 });
