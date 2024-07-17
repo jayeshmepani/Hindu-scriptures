@@ -27,7 +27,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const filename = urlParams.get('filename');
       console.log('Filename:', filename);
-  
+
       // Determine the URL based on the referrer using a mapping object
       const referrerMapping = {
         'Gita.html': `DharmicData/Gitas/${filename}`,
@@ -46,13 +46,13 @@
         'VarahaPurana.html': `DharmicData/Purana/Varaha Purana/${filename}`,
         'AgniPurana.html': `DharmicData/Purana/Agni Purana/${filename}`
       };
-  
+
       const referrerPage = Object.keys(referrerMapping).find(page => document.referrer.includes(page));
       const url = referrerPage ? referrerMapping[referrerPage] : null;
-  
+
       if (url) {
         console.log('URL:', url);
-  
+
         // Fetch and display the selected JSON file
         fetch(url)
           .then(response => {
@@ -64,7 +64,7 @@
           .then(data => {
             console.log('JSON Data:', data);
             const jsonContentDiv = document.getElementById('jsonContent');
-  
+
             // Handle the JSON data based on its structure
             if (Array.isArray(data) && data.length > 0) {
               if (data[0].content) {
@@ -106,7 +106,7 @@
       } else {
         console.log('Invalid referrer:', document.referrer);
       }
-  
+
       // Function to create and handle the "Translate" button
       function createTranslateButton() {
         const button = document.createElement('button');
@@ -123,26 +123,32 @@
         button.style.color = 'white';
         button.style.border = 'none';
         button.style.cursor = 'pointer';
-  
+
         button.addEventListener('click', () => {
           const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
           const originalBaseUrl = 'https://jayeshmepani.github.io';
           const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
           const currentPath = window.location.pathname;
-          const referrerParam = `&referrer=${encodeURIComponent(document.referrer)}`;
-          const extendedUrl = `${translatedBaseUrl}${currentPath}?filename=${filename}${additionalParams}${referrerParam}`;
+          const searchParams = window.location.search;
+          const extendedUrl = `${translatedBaseUrl}${currentPath}${searchParams}${additionalParams}`;
           console.log(`Extended URL: ${extendedUrl}`);
-          window.open(extendedUrl, '_blank');
+
+          // Create a hidden iframe to ensure the referrer is preserved
+          const iframe = document.createElement('iframe');
+          iframe.style.display = 'none';
+          iframe.src = extendedUrl;
+          document.body.appendChild(iframe);
         });
-  
+
         document.body.appendChild(button);
       }
-  
+
       // Call the function to create the Translate button
       createTranslateButton();
     });
   </script>
-  
+
+
 </body>
 
 </html>
