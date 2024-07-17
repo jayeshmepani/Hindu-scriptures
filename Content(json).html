@@ -21,36 +21,51 @@
       <!-- Content of the selected Parva will be displayed here -->
     </div>
   </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // Get the filename from the query parameters
       const urlParams = new URLSearchParams(window.location.search);
       const filename = urlParams.get('filename');
       console.log('Filename:', filename);
 
-      const referrerMapping = {
-        'Gita.html': `DharmicData/Gitas/${filename}`,
-        'DattP.html': `DharmicData/UpaPuranas/Datt Purana/${filename}`,
-        'Stotra.html': `DharmicData/Stotras/${filename}`,
-        'HarivanshaP.html': `DharmicData/UpaPuranas/Harivansha Purana/${filename}`,
-        'NaradiyaP.html': `DharmicData/UpaPuranas/Naradiya Purana/${filename}`,
-        'VishnudharmottarP.html': `DharmicData/UpaPuranas/Vishnudharmottar Purana/${filename}`,
-        'KalikaP.html': `DharmicData/UpaPuranas/Kalika Purana/${filename}`,
-        'MallaP.html': `DharmicData/UpaPuranas/Malla Purana/${filename}`,
-        'MudgalaP.html': `DharmicData/UpaPuranas/Mudgala Purana/${filename}`,
-        'ShivadharmaP.html': `DharmicData/UpaPuranas/Shivadharma Purana/${filename}`,
-        'SrimadDeviBhagwatP.html': `DharmicData/UpaPuranas/Srimad Devi Bhagwat Purana/${filename}`,
-        'Chalisa.html': `DharmicData/Chalisa/${filename}`,
-        'Ramcharitmanas.html': `DharmicData/Ramcharitmanas/${filename}`,
-        'VarahaPurana.html': `DharmicData/Purana/Varaha Purana/${filename}`,
-        'AgniPurana.html': `DharmicData/Purana/Agni Purana/${filename}`
-      };
-
-      const referrerPage = Object.keys(referrerMapping).find(page => document.referrer.includes(page));
-      const url = referrerPage ? referrerMapping[referrerPage] : null;
+      // Determine the URL based on the referrer
+      let url;
+      if (document.referrer.includes('Gita.html')) {
+        url = `DharmicData/Gitas/${filename}`;
+      } else if (document.referrer.includes('DattP.html')) {
+        url = `DharmicData/UpaPuranas/Datt Purana/${filename}`;
+      } else if (document.referrer.includes('Stotra.html')) {
+        url = `DharmicData/Stotras/${filename}`;
+      } else if (document.referrer.includes('HarivanshaP.html')) {
+        url = `DharmicData/UpaPuranas/Harivansha Purana/${filename}`;
+      } else if (document.referrer.includes('NaradiyaP.html')) {
+        url = `DharmicData/UpaPuranas/Naradiya Purana/${filename}`;
+      } else if (document.referrer.includes('VishnudharmottarP.html')) {
+        url = `DharmicData/UpaPuranas/Vishnudharmottar Purana/${filename}`;
+      } else if (document.referrer.includes('KalikaP.html')) {
+        url = `DharmicData/UpaPuranas/Kalika Purana/${filename}`;
+      } else if (document.referrer.includes('MallaP.html')) {
+        url = `DharmicData/UpaPuranas/Malla Purana/${filename}`;
+      } else if (document.referrer.includes('MudgalaP.html')) {
+        url = `DharmicData/UpaPuranas/Mudgala Purana/${filename}`;
+      } else if (document.referrer.includes('ShivadharmaP.html')) {
+        url = `DharmicData/UpaPuranas/Shivadharma Purana/${filename}`;
+      } else if (document.referrer.includes('SrimadDeviBhagwatP.html')) {
+        url = `DharmicData/UpaPuranas/Srimad Devi Bhagwat Purana/${filename}`;
+      } else if (document.referrer.includes('Chalisa.html')) {
+        url = `DharmicData/Chalisa/${filename}`;
+      } else if (document.referrer.includes('Ramcharitmanas.html')) {
+        url = `DharmicData/Ramcharitmanas/${filename}`;
+      }
+      else {
+        console.log('Invalid referrer:', document.referrer);
+      }
 
       if (url) {
         console.log('URL:', url);
 
+        // Fetch and display the selected JSON file
         fetch(url)
           .then(response => {
             if (!response.ok) {
@@ -60,80 +75,56 @@
           })
           .then(data => {
             console.log('JSON Data:', data);
+
             const jsonContentDiv = document.getElementById('jsonContent');
 
+            // Handle the JSON data based on its structure
             if (Array.isArray(data) && data.length > 0) {
+              // Check for "content" property in the first object
               if (data[0].content) {
+                // Display logic for JSON with "content" property
                 data.forEach(entry => {
                   const entryDiv = document.createElement('div');
+                  //entryDiv.style.marginBottom = '20px'; // Optional styling
                   entryDiv.innerHTML = `
-                                    <div style="display: grid; align-items: center; justify-content: center;">
-                                        <p style="color: yellow; font-weight: bold;">${entry.kaand}</p>
-                                        <p style="color: white; font-weight: bold;">${entry.type}</p>
-                                        <p style="color: orange;">${entry.content.replace(/\n/g, '<br>').trim()}</p>
-                                        <br><br>
-                                    </div>
-                                `;
+                      <div style="display: grid; align-items: center; justify-content: center;">
+                        <p style="color: yellow; font-weight: bold;">${entry.kaand}</p>
+                        <p style="color: white; font-weight: bold;">${entry.type}</p>
+                        <p style="color: orange;">${entry.content.replace(/\n/g, '<br>').trim()}</p>
+                        <br>
+                        <br>
+                      </div>
+                    `;
                   jsonContentDiv.appendChild(entryDiv);
                 });
-              } else if (data[0].text) {
+              } else if (Array.isArray(data) && data.length > 0 && data[0].text) {
+                // Display logic for JSON with "text" property
+
                 data.forEach(entry => {
                   const entryDiv = document.createElement('div');
+                  //entryDiv.style.marginBottom = '20px'; // Optional styling
                   entryDiv.innerHTML = `
-                                    <div style="display: grid; align-items: center; justify-content: center;">
-                                        <p style="color: yellow;">${entry.text.replace(/\n/g, '<br>').trim()}</p>
-                                        <br><br>
-                                    </div>
-                                `;
+                      <div style="display: grid; align-items: center; justify-content: center;">
+                        <p style="color: yellow;">${entry.text.replace(/\n/g, '<br>').trim()}</p>
+                        <br><br>
+                      </div>
+                    `;
                   jsonContentDiv.appendChild(entryDiv);
                 });
               } else {
-                console.error('Error: Unexpected JSON structure.');
+                console.error(`Error: Unexpected JSON structure.`);
               }
             } else {
-              console.error('Error: Unexpected JSON structure.');
+              console.error(`Error: Unexpected JSON structure.`);
             }
           })
           .catch(error => {
+            // Handle errors here
             console.error(`Error fetching or displaying JSON file ${filename}:`, error);
           });
-      } else {
-        console.log('Invalid referrer:', document.referrer);
       }
-
-      function createTranslateButton() {
-        const button = document.createElement('button');
-        button.innerText = 'Translate';
-        button.type = 'submit';
-        button.className = 'btn waves-effect waves-light';
-        button.style.position = 'fixed';
-        button.style.top = '10px';
-        button.style.right = '10px';
-        button.style.padding = '10px';
-        button.style.borderRadius = '13px';
-        button.style.background = '#058f8c';
-        button.style.boxShadow = 'inset 9.61px 9.61px 16px #047471, inset -9.61px -9.61px 16px #06aaa7';
-        button.style.color = 'white';
-        button.style.border = 'none';
-        button.style.cursor = 'pointer';
-
-        button.addEventListener('click', () => {
-          const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-          const originalBaseUrl = 'https://jayeshmepani.github.io';
-          const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
-          const currentPath = window.location.pathname;
-          const searchParams = window.location.search;
-          const extendedUrl = `${translatedBaseUrl}${currentPath}${searchParams}${additionalParams}`;
-          console.log(`Extended URL: ${extendedUrl}`);
-
-          window.open(extendedUrl, '_blank');
-        });
-
-        document.body.appendChild(button);
-      }
-
-      createTranslateButton();
     });
+
   </script>
 
 </body>

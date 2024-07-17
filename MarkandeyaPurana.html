@@ -9,7 +9,6 @@
     <link rel="icon" type="image/x-icon" href="/download.png">
 
     <style>
-
         .chapter {
             display: grid;
             align-items: center;
@@ -40,13 +39,14 @@
         }
 
         #chapterList li:first-child {
-            padding-top: 1rem; /* Adjust the top padding as needed */
+            padding-top: 1rem;
+            /* Adjust the top padding as needed */
         }
 
         #chapterList li:last-child {
-            padding-bottom: 1rem; /* Adjust the bottom padding as needed */
+            padding-bottom: 1rem;
+            /* Adjust the bottom padding as needed */
         }
-
     </style>
 
 </head>
@@ -65,7 +65,7 @@
             const li = document.createElement('li');
             const startChapter = i;
             let endChapter = Math.min(i + 4, 134);
-    
+
             // Handle exception for chapters 71-75
             if (startChapter === 71) {
                 endChapter = 80;
@@ -73,23 +73,23 @@
                 continue; // Skip 76-80 range
             }
             li.setAttribute('filename', `${startChapter}.json`);
-    
+
             const a = document.createElement('a');
             a.href = '#';
             a.setAttribute('onclick', `redirectToParvaContent('${startChapter}.json')`);
             a.textContent = `Chapter ${startChapter}-${endChapter}`;
-    
+
             li.appendChild(a);
             document.getElementById('chapterList').appendChild(li);
         }
-    
+
         // Function to redirect to the content page for the selected Parva range
         function redirectToParvaContent(filename) {
             // Redirect to ParvaContent.html with the selected filename as a query parameter
             window.location.href = `MarkandeyaPuranaContent.html?filename=${encodeURIComponent(filename)}`;
         }
-    </script>    
-    
+    </script>
+
 </body>
 
 </html>
