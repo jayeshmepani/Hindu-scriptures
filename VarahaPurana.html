@@ -67,7 +67,7 @@
 
             const a = document.createElement('a');
             a.href = '#';
-            a.setAttribute('onclick', `redirectToParvaContent('${chapter_number}.json')`);
+            a.setAttribute('onclick', `redirectToContent('${chapter_number}.json')`);
             a.textContent = `Chapter ${chapter_number}`;
 
             li.appendChild(a);
@@ -75,9 +75,14 @@
         }
 
         // Function to redirect to the content page for the selected Parva
-        function redirectToParvaContent(filename) {
+//        function redirectToParvaContent(filename) {
             // Redirect to ParvaContent.html with the selected filename as a query parameter
-            window.location.href = `VarahaPuranaContent.html?filename=${encodeURIComponent(filename)}`;
+//            window.location.href = `VarahaPuranaContent.html?filename=${encodeURIComponent(filename)}`;
+//        }
+
+        function redirectToContent(filename) {
+            // Redirect to Content.html with the selected filename as a query parameter
+            window.location.href = `Content(json).html?filename=${encodeURIComponent(filename)}`;
         }
     </script>
 
