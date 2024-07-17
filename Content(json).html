@@ -8,36 +8,6 @@
   <link rel="icon" type="image/x-icon" href="/download.png">
   <link rel="stylesheet" href="style.css">
   <title></title>
-
-  <style>
-
-    .container {
-     /* background-image: linear-gradient(#000733d4, rgba(0, 8, 51, 0.85)), url(images/bg.png);
-      height: 100vh;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-sizing: border-box;
-      padding: 1rem;
-      overflow: auto;*/
-
-      /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
-      scrollbar-width: none;
-      /* Hide scrollbar for Firefox */
-      -ms-overflow-style: none;
-      /* Hide scrollbar for IE and Edge */
-    }
-
-    .container::-webkit-scrollbar {
-      display: none;
-      /* Hide scrollbar for Webkit browsers */
-    }
-  </style>
-
 </head>
 
 <body>
@@ -114,12 +84,13 @@
           .then(data => {
             console.log('JSON Data:', data);
 
+            const jsonContentDiv = document.getElementById('jsonContent');
+
             // Handle the JSON data based on its structure
             if (Array.isArray(data) && data.length > 0) {
               // Check for "content" property in the first object
               if (data[0].content) {
                 // Display logic for JSON with "content" property
-                const jsonContentDiv = document.getElementById('jsonContent');
                 data.forEach(entry => {
                   const entryDiv = document.createElement('div');
                   //entryDiv.style.marginBottom = '20px'; // Optional styling
@@ -134,9 +105,9 @@
                     `;
                   jsonContentDiv.appendChild(entryDiv);
                 });
-              } else if (data[0].text) {
+              } else if (Array.isArray(data) && data.length > 0 && data[0].text) {
                 // Display logic for JSON with "text" property
-                const jsonContentDiv = document.getElementById('jsonContent');
+
                 data.forEach(entry => {
                   const entryDiv = document.createElement('div');
                   //entryDiv.style.marginBottom = '20px'; // Optional styling
