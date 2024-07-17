@@ -22,131 +22,128 @@
     </div>
   </div>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      // Get the filename from the query parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const filename = urlParams.get('filename');
-      console.log('Filename:', filename);
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get the filename from the query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const filename = urlParams.get('filename');
+    console.log('Filename:', filename);
 
-      // Determine the URL based on the referrer using a mapping object
-      const referrerMapping = {
-        'Gita.html': `DharmicData/Gitas/${filename}`,
-        'DattP.html': `DharmicData/UpaPuranas/Datt Purana/${filename}`,
-        'Stotra.html': `DharmicData/Stotras/${filename}`,
-        'HarivanshaP.html': `DharmicData/UpaPuranas/Harivansha Purana/${filename}`,
-        'NaradiyaP.html': `DharmicData/UpaPuranas/Naradiya Purana/${filename}`,
-        'VishnudharmottarP.html': `DharmicData/UpaPuranas/Vishnudharmottar Purana/${filename}`,
-        'KalikaP.html': `DharmicData/UpaPuranas/Kalika Purana/${filename}`,
-        'MallaP.html': `DharmicData/UpaPuranas/Malla Purana/${filename}`,
-        'MudgalaP.html': `DharmicData/UpaPuranas/Mudgala Purana/${filename}`,
-        'ShivadharmaP.html': `DharmicData/UpaPuranas/Shivadharma Purana/${filename}`,
-        'SrimadDeviBhagwatP.html': `DharmicData/UpaPuranas/Srimad Devi Bhagwat Purana/${filename}`,
-        'Chalisa.html': `DharmicData/Chalisa/${filename}`,
-        'Ramcharitmanas.html': `DharmicData/Ramcharitmanas/${filename}`,
-        'VarahaPurana.html': `DharmicData/Purana/Varaha Purana/${filename}`,
-        'AgniPurana.html': `DharmicData/Purana/Agni Purana/${filename}`
-      };
+    // Determine the URL based on the referrer using a mapping object
+    const referrerMapping = {
+      'Gita.html': `DharmicData/Gitas/${filename}`,
+      'DattP.html': `DharmicData/UpaPuranas/Datt Purana/${filename}`,
+      'Stotra.html': `DharmicData/Stotras/${filename}`,
+      'HarivanshaP.html': `DharmicData/UpaPuranas/Harivansha Purana/${filename}`,
+      'NaradiyaP.html': `DharmicData/UpaPuranas/Naradiya Purana/${filename}`,
+      'VishnudharmottarP.html': `DharmicData/UpaPuranas/Vishnudharmottar Purana/${filename}`,
+      'KalikaP.html': `DharmicData/UpaPuranas/Kalika Purana/${filename}`,
+      'MallaP.html': `DharmicData/UpaPuranas/Malla Purana/${filename}`,
+      'MudgalaP.html': `DharmicData/UpaPuranas/Mudgala Purana/${filename}`,
+      'ShivadharmaP.html': `DharmicData/UpaPuranas/Shivadharma Purana/${filename}`,
+      'SrimadDeviBhagwatP.html': `DharmicData/UpaPuranas/Srimad Devi Bhagwat Purana/${filename}`,
+      'Chalisa.html': `DharmicData/Chalisa/${filename}`,
+      'Ramcharitmanas.html': `DharmicData/Ramcharitmanas/${filename}`,
+      'VarahaPurana.html': `DharmicData/Purana/Varaha Purana/${filename}`,
+      'AgniPurana.html': `DharmicData/Purana/Agni Purana/${filename}`
+    };
 
-      const referrerPage = Object.keys(referrerMapping).find(page => document.referrer.includes(page));
-      const url = referrerPage ? referrerMapping[referrerPage] : null;
+    const referrerPage = Object.keys(referrerMapping).find(page => document.referrer.includes(page));
+    const url = referrerPage ? referrerMapping[referrerPage] : null;
 
-      if (url) {
-        console.log('URL:', url);
+    if (url) {
+      console.log('URL:', url);
 
-        // Fetch and display the selected JSON file
-        fetch(url)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error(`Failed to fetch JSON file: ${filename}`);
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log('JSON Data:', data);
-            const jsonContentDiv = document.getElementById('jsonContent');
+      // Fetch and display the selected JSON file
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Failed to fetch JSON file: ${filename}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('JSON Data:', data);
+          const jsonContentDiv = document.getElementById('jsonContent');
 
-            // Handle the JSON data based on its structure
-            if (Array.isArray(data) && data.length > 0) {
-              if (data[0].content) {
-                // Display logic for JSON with "content" property
-                data.forEach(entry => {
-                  const entryDiv = document.createElement('div');
-                  entryDiv.innerHTML = `
-                    <div style="display: grid; align-items: center; justify-content: center;">
-                      <p style="color: yellow; font-weight: bold;">${entry.kaand}</p>
-                      <p style="color: white; font-weight: bold;">${entry.type}</p>
-                      <p style="color: orange;">${entry.content.replace(/\n/g, '<br>').trim()}</p>
-                      <br><br>
-                    </div>
-                  `;
-                  jsonContentDiv.appendChild(entryDiv);
-                });
-              } else if (data[0].text) {
-                // Display logic for JSON with "text" property
-                data.forEach(entry => {
-                  const entryDiv = document.createElement('div');
-                  entryDiv.innerHTML = `
-                    <div style="display: grid; align-items: center; justify-content: center;">
-                      <p style="color: yellow;">${entry.text.replace(/\n/g, '<br>').trim()}</p>
-                      <br><br>
-                    </div>
-                  `;
-                  jsonContentDiv.appendChild(entryDiv);
-                });
-              } else {
-                console.error('Error: Unexpected JSON structure.');
-              }
+          // Handle the JSON data based on its structure
+          if (Array.isArray(data) && data.length > 0) {
+            if (data[0].content) {
+              // Display logic for JSON with "content" property
+              data.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.innerHTML = `
+                  <div style="display: grid; align-items: center; justify-content: center;">
+                    <p style="color: yellow; font-weight: bold;">${entry.kaand}</p>
+                    <p style="color: white; font-weight: bold;">${entry.type}</p>
+                    <p style="color: orange;">${entry.content.replace(/\n/g, '<br>').trim()}</p>
+                    <br><br>
+                  </div>
+                `;
+                jsonContentDiv.appendChild(entryDiv);
+              });
+            } else if (data[0].text) {
+              // Display logic for JSON with "text" property
+              data.forEach(entry => {
+                const entryDiv = document.createElement('div');
+                entryDiv.innerHTML = `
+                  <div style="display: grid; align-items: center; justify-content: center;">
+                    <p style="color: yellow;">${entry.text.replace(/\n/g, '<br>').trim()}</p>
+                    <br><br>
+                  </div>
+                `;
+                jsonContentDiv.appendChild(entryDiv);
+              });
             } else {
               console.error('Error: Unexpected JSON structure.');
             }
-          })
-          .catch(error => {
-            console.error(`Error fetching or displaying JSON file ${filename}:`, error);
-          });
-      } else {
-        console.log('Invalid referrer:', document.referrer);
-      }
-
-      // Function to create and handle the "Translate" button
-      function createTranslateButton() {
-        const button = document.createElement('button');
-        button.innerText = 'Translate';
-        button.type = 'submit';
-        button.className = 'btn waves-effect waves-light'; // Add the specified class names
-        button.style.position = 'fixed';
-        button.style.top = '10px';
-        button.style.right = '10px';
-        button.style.padding = '10px';
-        button.style.borderRadius = '13px'; // Update border-radius
-        button.style.background = '#058f8c'; // Update background
-        button.style.boxShadow = 'inset 9.61px 9.61px 16px #047471, inset -9.61px -9.61px 16px #06aaa7'; // Update box-shadow
-        button.style.color = 'white';
-        button.style.border = 'none';
-        button.style.cursor = 'pointer';
-
-        button.addEventListener('click', () => {
-          const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-          const originalBaseUrl = 'https://jayeshmepani.github.io';
-          const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
-          const currentPath = window.location.pathname;
-          const searchParams = window.location.search;
-          const extendedUrl = `${translatedBaseUrl}${currentPath}${searchParams}${additionalParams}`;
-          console.log(`Extended URL: ${extendedUrl}`);
-
-          // Create a hidden iframe to ensure the referrer is preserved
-          const iframe = document.createElement('iframe');
-          iframe.style.display = 'none';
-          iframe.src = extendedUrl;
-          document.body.appendChild(iframe);
+          } else {
+            console.error('Error: Unexpected JSON structure.');
+          }
+        })
+        .catch(error => {
+          console.error(`Error fetching or displaying JSON file ${filename}:`, error);
         });
+    } else {
+      console.log('Invalid referrer:', document.referrer);
+    }
 
-        document.body.appendChild(button);
-      }
+    // Function to create and handle the "Translate" button
+    function createTranslateButton() {
+      const button = document.createElement('button');
+      button.innerText = 'Translate';
+      button.type = 'submit';
+      button.className = 'btn waves-effect waves-light'; // Add the specified class names
+      button.style.position = 'fixed';
+      button.style.top = '10px';
+      button.style.right = '10px';
+      button.style.padding = '10px';
+      button.style.borderRadius = '13px'; // Update border-radius
+      button.style.background = '#058f8c'; // Update background
+      button.style.boxShadow = 'inset 9.61px 9.61px 16px #047471, inset -9.61px -9.61px 16px #06aaa7'; // Update box-shadow
+      button.style.color = 'white';
+      button.style.border = 'none';
+      button.style.cursor = 'pointer';
 
-      // Call the function to create the Translate button
-      createTranslateButton();
-    });
-  </script>
+      button.addEventListener('click', () => {
+        const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
+        const originalBaseUrl = 'https://jayeshmepani.github.io';
+        const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
+        const currentPath = window.location.pathname;
+        const searchParams = window.location.search;
+        const extendedUrl = `${translatedBaseUrl}${currentPath}${searchParams}${additionalParams}`;
+        console.log(`Extended URL: ${extendedUrl}`);
+        
+        // Open the translated URL in a new tab
+        window.open(extendedUrl, '_blank');
+      });
+
+      document.body.appendChild(button);
+    }
+
+    // Call the function to create the Translate button
+    createTranslateButton();
+  });
+</script>
 
 
 </body>
