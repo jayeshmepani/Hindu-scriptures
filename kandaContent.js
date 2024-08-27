@@ -104,8 +104,8 @@ function createTranslateButton() {
 
     button.addEventListener('click', () => {
         const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-        const originalBaseUrl = 'https://jayeshmepani.github.io';
-        const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog';
+        const originalBaseUrl = 'https://hinduscriptures.netlify.app/';
+        const translatedBaseUrl = 'https://hinduscriptures-netlify-app.translate.goog';
         const currentPath = window.location.pathname;
         const urlParams = new URLSearchParams(window.location.search);
         const kandaNumber = urlParams.get('kandaNumber');
@@ -114,6 +114,9 @@ function createTranslateButton() {
         console.log(`Extended URL: ${extendedUrl}`);
         window.open(extendedUrl, '_blank');
     });
+
+
+    // https://hinduscriptures-netlify-app.translate.goog/kandacontent?kandaNumber=1&selectedKanda=Balakanda&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB
 
     document.body.appendChild(button);
 }
