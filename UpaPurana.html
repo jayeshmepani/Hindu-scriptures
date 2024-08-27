@@ -135,13 +135,13 @@
       const a = document.createElement("a");
       a.href = "#";
       a.textContent = filename.replace(".json", "").replace(".pdf", ""); // Remove file extensions
-      a.addEventListener("click", () => redirectToGitaContent(filename)); // Use addEventListener for better event handling
+      a.addEventListener("click", () => redirectToContent(filename)); // Use addEventListener for better event handling
 
       li.appendChild(a);
       document.getElementById("UpaPuranasList").appendChild(li);
     });
 
-    function redirectToGitaContent(filename) {
+    function redirectToContent(filename) {
       if (filename.endsWith('.pdf')) {
         window.location.href = `Content(pdf).html?filename=${encodeURIComponent(filename)}`;
       }
