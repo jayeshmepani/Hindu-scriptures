@@ -57,6 +57,9 @@
       else if (document.referrer.includes('Chalisa.html')) {
         url = `DharmicData/Chalisa/${filename}`;
       }
+      else if (document.referrer.includes('UpaPurana.html')) {
+        url = `DharmicData/UpaPuranas/${filename}`;
+      }
       else {
         console.error('Invalid referrer:', document.referrer);
       }
