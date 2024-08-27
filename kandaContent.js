@@ -104,8 +104,10 @@ function createTranslateButton() {
 
     button.addEventListener('click', () => {
         const additionalParams = `&_x_tr_sl=sa&_x_tr_tl=en&_x_tr_hl=en-GB`;
-        const originalBaseUrl = 'https://hinduscriptures.netlify.app/';
-        const translatedBaseUrl = 'https://hinduscriptures-netlify-app.translate.goog';
+        const originalBaseUrl = 'https://jayeshmepani.github.io/';
+        const translatedBaseUrl = 'https://jayeshmepani-github-io.translate.goog/';
+        // const originalBaseUrl = 'https://hinduscriptures.netlify.app/';
+        // const translatedBaseUrl = 'https://hinduscriptures-netlify-app.translate.goog';
         const currentPath = window.location.pathname;
         const urlParams = new URLSearchParams(window.location.search);
         const kandaNumber = urlParams.get('kandaNumber');
